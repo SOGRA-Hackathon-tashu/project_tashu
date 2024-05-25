@@ -1,8 +1,9 @@
 import React from 'react';
+import './../styles/Feedback.css';
 
 function Feedback() {
   return (
-    <div style={{ backgroundColor: '#ccff66', height: '100vh', padding: '20px' }}>
+    <div className='feedback_main'>
       <h2>주행 종료</h2>
       <div>
         <span>별점:</span>

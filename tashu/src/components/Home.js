@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import './../styles/Home.css';
 
 function Home({ isLoggedIn, setIsLoggedIn }) {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
   };
 
   return (
-    <div style={{ backgroundColor: '#ccff66', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <div className='home_main'>
       <div style={{ position: 'absolute', top: 10, right: 10 }}>
         {isLoggedIn ? (
           <>
@@ -25,9 +26,16 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
           <button onClick={() => navigate('/login')}>로그인</button>
         )}
       </div>
-      <h1>타보슈</h1>
-      <input type="text" placeholder="목적지를 검색하세요." />
-      <button onClick={handleSearch}>검색</button>
+      <h1 className='home_title'>타보슈</h1>
+      <input 
+        type="text" 
+        placeholder="목적지를 검색하세요." 
+        className='home_input'
+      />
+      <button 
+        onClick={handleSearch}
+        className='home_button'
+      >검색</button>
     </div>
   );
 }

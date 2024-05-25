@@ -1,8 +1,9 @@
 import React from 'react';
+import './../styles/UserProfile.css';
 
 function UserProfile({ userInfo }) {
   return (
-    <div style={{ backgroundColor: '#ccff66', height: '100vh', padding: '20px' }}>
+    <div className='userprofile_main'>
       <h2>사용자 정보</h2>
       <div>
         <p>아이디: {userInfo.username}</p>

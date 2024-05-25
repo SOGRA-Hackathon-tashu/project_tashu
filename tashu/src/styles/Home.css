@@ -1,0 +1,23 @@
+/* style={{ backgroundColor: '#ccff66', 
+  height: '100vh', 
+  display: 'flex', 
+  flexDirection: 'column', 
+  justifyContent: 'center', 
+  alignItems: 'center' }} */
+
+.home_main {
+  background-color: #DFFF80;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home_input {
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  padding: 20px;
+  text-align: center;
+}

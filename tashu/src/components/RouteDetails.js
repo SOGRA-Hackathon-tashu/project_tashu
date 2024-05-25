@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import './../styles/RouteDetails.css';
 
 function RouteDetails() {
   const navigate = useNavigate();
@@ -9,14 +10,14 @@ function RouteDetails() {
   };
 
   return (
-    <div style={{ backgroundColor: '#ccff66', height: '100vh', padding: '20px' }}>
+    <div className='route_detail_main'>
       <div>
         <h2>경로 상세</h2>
         <div>
           <img src="your_map_image_url" alt="Map" style={{ width: '100%' }} />
         </div>
         <div>
-          <p>예상 소요시간: 3분</p>
+          <p className='route_detail_time'>예상 소요시간: 3분</p>
           <button onClick={handleArrival}>도착</button>
         </div>
       </div>
