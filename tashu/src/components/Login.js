@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithFirebase } from '../firebase';
+import './../styles/Login.css';
+
 
 function Login({ setIsLoggedIn, setUserInfo }) {
   const navigate = useNavigate();
@@ -41,12 +43,30 @@ function Login({ setIsLoggedIn, setUserInfo }) {
   };
 
   return (
-    <div style={{ backgroundColor: '#ccff66', height: '100vh', padding: '20px' }}>
-      <h2>로그인</h2>
-      <input type="text" placeholder="아이디" value={email} onChange={handleEmailChange} />
-      <input type="password" placeholder="비밀번호" value={password} onChange={handlePasswordChange} />
-      <button onClick={handleLogin}>로그인하기</button>
-      <button onClick={() => navigate('/signup')}>회원가입</button>
+    <div className='login_main'>
+      <h2 className='login_title'>로그인</h2>
+      <input 
+        type="text" 
+        placeholder="아이디" 
+        value={email} 
+        onChange={handleEmailChange} 
+        className='login_input'
+      />
+      <input 
+        type="password" 
+        placeholder="비밀번호" 
+        value={password} 
+        onChange={handlePasswordChange} 
+        className='login_input'
+      />
+      <button 
+        onClick={handleLogin}
+        className='button'
+      >로그인하기</button>
+      <button 
+        onClick={() => navigate('/signup')}
+        className='button'
+      >회원가입</button>
     </div>
   );
 }
