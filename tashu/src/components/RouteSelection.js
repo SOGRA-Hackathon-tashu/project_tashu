@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import './../styles/RouteSelection.css';
 
-function RouteSelection() {
+function RouteSelection({ userInfo }) {
   const navigate = useNavigate();
 
   const location = useLocation();
   const target_point = location.state.search;
   
   const handleRouteSelect = () => {
+
+    const uid = userInfo.username;
+    updateDoc(doc(db, "ride_info", uid), {
+      start_time: 0 // 시간 정보 업데이트 필요
+    });
+
     navigate('/route-details');
   };
 

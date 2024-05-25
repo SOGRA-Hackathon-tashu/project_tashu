@@ -18,9 +18,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/routes" element={<RouteSelection />} />
+        <Route path="/routes" element={<RouteSelection userInfo={userInfo}/>} />
         <Route path="/route-details" element={<RouteDetails />} />
-        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/feedback" element={<Feedback userInfo={userInfo}/>} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/user-profile" element={<UserProfile userInfo={userInfo} />} />

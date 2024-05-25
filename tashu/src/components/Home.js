@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, getDocs, doc, setDoc, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import './../styles/Home.css';
 
 function Home({ isLoggedIn, setIsLoggedIn }) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [reviews, setReviews] = useState([]);
 
   const handleSearch = () => {
     // 검색어(searchQuery)가 비어있다면 전달 X
@@ -23,6 +26,25 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
     setIsLoggedIn(false);
     navigate('/');
   };
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const reviewDocs = [];
+        const querySnapshot = await getDocs(collection(db, 'review'));
+        querySnapshot.forEach((doc) => {
+          const reviewData = doc.data();
+          reviewDocs.push({ id: doc.id, ...reviewData });
+        });
+        setReviews(reviewDocs);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
 
   return (
     <div className='home_main'>
@@ -48,6 +70,15 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
         onClick={handleSearch}
         className='home_button'
       >검색</button>
+      <div>
+      {reviews.map((review) => (
+        <div key={review.id} className="white-block">
+          <h3>{review.review_str}</h3>
+          <p>별점: {review.rating}</p>
+          {/* 기타 리뷰 정보를 여기에 추가하세요 */}
+        </div>
+      ))}
+    </div>
     </div>
   );
 }

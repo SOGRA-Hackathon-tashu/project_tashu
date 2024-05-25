@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signupWithEmailAndPassword, db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import './../styles/Signup.css';
 
 
@@ -24,9 +24,14 @@ function Signup() {
       setUid(user.uid);
       alert('회원가입이 완료되었습니다.');
     
-      await addDoc(collection(db, "users"), {
+      await setDoc(doc(db, "users", user.uid), {
         UID : user.uid,
-        Route_cnt : 0
+        Route_cnt : 0,
+      });
+
+      await setDoc(doc(db, "ride_info", user.uid), {
+        UID: user.uid,
+        start_time: 1 // 초기 시간값
       });
 
       navigate('/login');

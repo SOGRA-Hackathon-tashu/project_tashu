@@ -6,7 +6,11 @@ function RouteDetails() {
   const navigate = useNavigate();
   
   const handleArrival = () => {
-    navigate('/feedback');
+    navigate('/feedback', {
+      state: {
+        first_loc: "first loc",   // 처음 장소 받아오기
+      }
+    });
   };
 
   return (
