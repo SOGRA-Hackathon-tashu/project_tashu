@@ -4,9 +4,19 @@ import './../styles/Home.css';
 
 function Home({ isLoggedIn, setIsLoggedIn }) {
   const navigate = useNavigate();
-  
+  const [searchQuery, setSearchQuery] = React.useState('');
+
   const handleSearch = () => {
-    navigate('/routes');
+    // 검색어(searchQuery)가 비어있다면 전달 X
+    if(!searchQuery) {
+      return;
+    }
+    // 검색 버튼을 클릭할 때 검색어(searchQuery)를 routes 페이지로 전달합니다.
+    navigate(`/routes`, {
+      state: {
+        search : `${searchQuery}`,
+      }
+    });
   };
 
   const handleLogout = () => {
@@ -29,7 +39,9 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
       <h1 className='home_title'>타보슈</h1>
       <input 
         type="text" 
-        placeholder="목적지를 검색하세요." 
+        placeholder="목적지를 검색하세요."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className='home_input'
       />
       <button 

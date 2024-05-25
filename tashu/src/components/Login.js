@@ -28,11 +28,10 @@ function Login({ setIsLoggedIn, setUserInfo }) {
     
     try {
       // 파이어베이스 auth를 이용하여 이메일과 비밀번호로 로그인 시도
-      const userCredential = await signInWithFirebase(email.trim(), password.trim());
+      const user = await signInWithFirebase(email.trim(), password.trim());
       // 로그인 성공 시 필요한 작업 수행
-      const user = userCredential.user;
       setIsLoggedIn(true); // 로그인 상태 설정
-      setUserInfo({ username: email }); // 사용자 정보 설정
+      setUserInfo({ username: user.uid }); // 사용자 정보 설정
       navigate('/'); // 홈페이지로 이동
     } catch (error) {
       // 로그인 실패 시 에러 메시지 처리

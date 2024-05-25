@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signupWithEmailAndPassword } from '../firebase';
+import { signupWithEmailAndPassword, db } from '../firebase';
+import { collection, addDoc } from 'firebase/firestore';
 import './../styles/Signup.css';
 
 
@@ -9,6 +10,7 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [uid, setUid] = useState(null);
 
   const handleSignup = async () => {
     // 회원가입 로직 구현
@@ -18,8 +20,15 @@ function Signup() {
     }
 
     try {
-      await signupWithEmailAndPassword(email, password);
+      const user = await signupWithEmailAndPassword(email, password);
+      setUid(user.uid);
       alert('회원가입이 완료되었습니다.');
+    
+      await addDoc(collection(db, "users"), {
+        UID : user.uid,
+        Route_cnt : 0
+      });
+
       navigate('/login');
     } catch (error) {
       alert(`회원가입 실패: ${error.message}`);

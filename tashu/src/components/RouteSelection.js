@@ -1,9 +1,12 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './../styles/RouteSelection.css';
 
 function RouteSelection() {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const target_point = location.state.search;
   
   const handleRouteSelect = () => {
     navigate('/route-details');
