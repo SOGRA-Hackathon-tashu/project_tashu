@@ -1,0 +1,15 @@
+/* style={{ 
+  backgroundColor: '#ccff66', 
+  height: '100vh', 
+  padding: '20px' }} */
+
+.route_selection_main {
+  background-color: #DFFF80;
+  height: 100vh;
+  padding: 20px;
+}
+
+.route_selection_button {
+  display: flex;
+  flex-direction: column;
+}

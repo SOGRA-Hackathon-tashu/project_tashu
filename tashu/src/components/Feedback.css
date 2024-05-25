@@ -1,0 +1,10 @@
+/* style={{ 
+  backgroundColor: '#ccff66', 
+  height: '100vh', 
+  padding: '20px' }} */
+
+.feedback_main {
+  background-color: #DFFF80;
+  height: 100vh;
+  padding: 20px;
+}

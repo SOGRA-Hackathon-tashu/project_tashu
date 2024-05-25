@@ -1,0 +1,12 @@
+/* style={{ 
+  backgroundColor: '#ccff66', 
+  height: '100vh', 
+  padding: '20px' }} */
+
+.userprofile_main {
+  background-color: #dfff80;
+  height: 100vh;
+  padding: 20px;
+
+  text-align: center;
+}

@@ -1,0 +1,25 @@
+.signup_main {
+  background-color: #dfff80;
+  height: 100vh;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.signup_title {
+  text-align: center;
+}
+
+/* style={{ 
+  backgroundColor: '#ccff66', 
+  height: '100vh', 
+  padding: '20px' }} */
+
+.signup_input {
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 15px;
+  text-align: center;
+}

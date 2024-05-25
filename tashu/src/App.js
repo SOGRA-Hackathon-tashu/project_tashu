@@ -1,33 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
-import Page from './component/Page';
-
-// firebase.js에서 db를 import
-import { db } from './firebase';
-import { useEffect, useState } from 'react';
-// firestore의 메서드 import
-import { doc, getDoc } from 'firebase/firestore';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import RouteSelection from './components/RouteSelection';
+import RouteDetails from './components/RouteDetails';
+import Feedback from './components/Feedback';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import UserProfile from './components/UserProfile';
+import { useState } from 'react';
 
 function App() {
-  const [test, setTest] = useState()
-  // async - await로 데이터 fetch 대기
-  async function getTest() {
-    // document에 대한 참조 생성
-    const docRef = doc(db, "items", "1");
-    // 참조에 대한 Snapshot 쿼리
-    const docSnap = await getDoc(docRef);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
-    if (docSnap.exists()) {
-      setTest(docSnap.data())
-    }
-  };
-  // 최초 마운트 시에 getTest import
-  useEffect(() => {
-    getTest()
-  }, [])
   return (
-    <div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/routes" element={<RouteSelection />} />
+        <Route path="/route-details" element={<RouteDetails />} />
+        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/user-profile" element={<UserProfile userInfo={userInfo} />} />
+      </Routes>
+    </Router>
   );
 }
 
