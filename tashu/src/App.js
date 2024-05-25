@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import Page from './component/Page';
 
 // firebase.js에서 db를 import
 import { db } from './firebase';
@@ -26,8 +27,6 @@ function App() {
   }, [])
   return (
     <div>
-        {test !== undefined &&
-        <div>{test.name}</div>}
     </div>
   );
 }
