@@ -70,15 +70,16 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
         onClick={handleSearch}
         className='home_button'
       >검색</button>
+
       <div>
-      {reviews.map((review) => (
-        <div key={review.id} className="white-block">
-          <h3>{review.review_str}</h3>
-          <p>별점: {review.rating}</p>
-          {/* 기타 리뷰 정보를 여기에 추가하세요 */}
-        </div>
-      ))}
-    </div>
+        {reviews.map((review) => (
+          <div key={review.id} className="white-block">
+            <h3>{review.review_str}</h3>
+            <p>별점: {review.rating}</p>
+            {/* 기타 리뷰 정보를 여기에 추가하세요 */}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
