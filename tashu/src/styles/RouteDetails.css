@@ -3,8 +3,16 @@
   height: '100vh', 
   padding: '20px' }} */
 
-.feedback_main {
+.route_detail_main {
   background-color: #DFFF80;
   height: 100vh;
   padding: 20px;
+
+  text-align: center;
+}
+
+.route_detail_time {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  padding: 10px;
 }

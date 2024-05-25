@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './RouteSelection.css';
+import './../styles/RouteSelection.css';
 
 function RouteSelection() {
   const navigate = useNavigate();
