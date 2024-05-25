@@ -5,6 +5,7 @@
 
   display: flex;
   flex-direction: column;
+  gap: 30px;
 }
 
 .signup_title {
@@ -22,4 +23,7 @@
   outline: none;
   padding: 15px;
   text-align: center;
+
+  width: 500px;
+  margin: 0 auto;
 }
