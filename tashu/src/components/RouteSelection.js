@@ -1,23 +1,23 @@
-import React, { useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './../styles/RouteSelection.css';
 
 const { kakao } = window;
 
 function RouteSelection({ userInfo }) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const target_point = location.state?.search;
+  const [distance, setDistance] = useState(null);
+  const [bikeTime, setBikeTime] = useState(null);
+  const [routeDetails, setRouteDetails] = useState(null);
 
   const handleRouteSelect = () => {
-    const uid = userInfo.username;
-    updateDoc(doc(db, "ride_info", uid), {
-      start_time: 0 // 시간 정보 업데이트 필요
-    });
+    if (!userInfo) {
+      alert("로그인이 필요합니다.");
+      navigate('/login');
+      return;
+    }
 
-    navigate('/route-details');
+    navigate('/route-details', { state: { routeDetails, bikeTime } });
   };
 
   const mapRef = useRef(null);
@@ -58,71 +58,58 @@ function RouteSelection({ userInfo }) {
 
       if (markersRef.current.length === 2) {
         const [marker1, marker2] = markersRef.current;
-        const startLat = marker1.getPosition().getLat();
-        const startLng = marker1.getPosition().getLng();
-        const endLat = marker2.getPosition().getLat();
-        const endLng = marker2.getPosition().getLng();
-        const address = "https://apis-navi.kakaomobility.com/v1/directions"
-        try {
-          const response = await fetch(address + '?priority=RECOMMEND&car_type=1&car_fuel=GASOLINE&origin='+startLng+'%2C'+startLat+'&destination='+endLng+'%2C'+endLat, {
-            method: 'GET',
-            headers: {
-              'Authorization': 'KakaoAK c98d24493fb530f60abd2d13aaf97c3b',
-              'Content-Type': 'application/json'
-            }
-            // body: JSON.stringify({
-            //   origin: { x: startLng, y: startLat },
-            //   destination: { x: endLng, y: endLat },
-            //   waypoints: []
-            // })
-          });
+        const path = [marker1.getPosition(), marker2.getPosition()];
+        const polyline = new kakao.maps.Polyline({
+          path: path,
+          strokeWeight: 5,
+          strokeColor: '#FFAE00',
+          strokeOpacity: 0.7,
+          strokeStyle: 'solid'
+        });
 
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const data = await response.json();
-          const distance = data.routes[0]?.summary?.distance;
-
-          if (distance === undefined) {
-            throw new Error('Distance not found in response');
-          }
-
-          // 이전 라인 제거
-          if (lineRef.current) {
-            lineRef.current.setMap(null);
-          }
-
-          const polyline = new kakao.maps.Polyline({
-            path: [marker1.getPosition(), marker2.getPosition()],
-            strokeWeight: 5,
-            strokeColor: '#FFAE00',
-            strokeOpacity: 0.7,
-            strokeStyle: 'solid'
-          });
-
-          polyline.setMap(map);
-          lineRef.current = polyline;
-
-          // 이전 거리 오버레이 제거
-          if (distanceOverlayRef.current) {
-            distanceOverlayRef.current.setMap(null);
-          }
-
-          const content = `<div style="padding:5px;">자동차 기준 거리: ${(distance / 1000).toFixed(2)} km</div>`;
-          const distanceOverlay = new kakao.maps.CustomOverlay({
-            content,
-            position: marker2.getPosition(),
-            xAnchor: 0.5,
-            yAnchor: 0,
-            zIndex: 3
-          });
-
-          distanceOverlay.setMap(map);
-          distanceOverlayRef.current = distanceOverlay;
-        } catch (error) {
-          console.error('Error fetching distance:', error);
+        // 이전 라인 제거
+        if (lineRef.current) {
+          lineRef.current.setMap(null);
         }
+
+        polyline.setMap(map);
+        lineRef.current = polyline;
+
+        // 거리 계산
+        const linePath = polyline.getPath();
+        const distance = Math.round(polyline.getLength()); // meter
+        setDistance(distance);
+
+        const bikeSpeed = 15 * 1000 / 60; // 15km/h in m/min
+        const bikeTime = (distance / bikeSpeed).toFixed(2); // minutes
+
+        // 분과 초로 변환
+        const minutes = Math.floor(bikeTime);
+        const seconds = Math.round((bikeTime - minutes) * 60);
+
+        setBikeTime(`${minutes}분 ${seconds}초`);
+
+        // 경로 정보를 저장
+        const start = { lat: marker1.getPosition().getLat(), lng: marker1.getPosition().getLng() };
+        const end = { lat: marker2.getPosition().getLat(), lng: marker2.getPosition().getLng() };
+        setRouteDetails({ start, end });
+
+        // 거리 오버레이 제거
+        if (distanceOverlayRef.current) {
+          distanceOverlayRef.current.setMap(null);
+        }
+
+        const content = `<div style="padding:5px;">거리: ${(distance / 1000).toFixed(2)} km</div>`;
+        const distanceOverlay = new kakao.maps.CustomOverlay({
+          content,
+          position: marker2.getPosition(),
+          xAnchor: 0.5,
+          yAnchor: 0,
+          zIndex: 3
+        });
+
+        distanceOverlay.setMap(map);
+        distanceOverlayRef.current = distanceOverlay;
       }
     });
   }, []);
@@ -131,13 +118,11 @@ function RouteSelection({ userInfo }) {
     <div className='route_selection_main'>
       <div>
         <h2>경로 선택</h2>
-        <div id='map' style={{ width: '500px', height: '500px' }}>
+        <div id='map' style={{ width: '80%', height: '500px', margin: '0 auto 20px' }}>
           <div ref={mapRef} style={{ width: '100%', height: '400px' }}></div>
         </div>
         <div className='route_selection_button'>
-          <button onClick={handleRouteSelect}>경로 1 - 예상 소요시간 3분</button>
-          <button onClick={handleRouteSelect}>경로 2 - 예상 소요시간 5분</button>
-          <button onClick={handleRouteSelect}>경로 3 - 예상 소요시간 5분</button>
+          <button onClick={handleRouteSelect}>예상 소요 시간: {bikeTime ? bikeTime : '측정 중'}</button>
         </div>
       </div>
     </div>

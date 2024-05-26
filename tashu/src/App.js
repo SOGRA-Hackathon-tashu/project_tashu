@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+// 이 파일에서는 사용되지 않는 logo 변수를 제거합니다.
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
